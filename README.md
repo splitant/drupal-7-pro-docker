@@ -14,6 +14,7 @@ The goal is to set up fastly a local Drupal 7 project with docker environment fo
 
    ```sh
    make create-setup <project> <repo-git>
+   cp .env.dist .env
    # Fill env file
    make up
    make drupal-install
