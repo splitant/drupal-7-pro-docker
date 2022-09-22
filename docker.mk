@@ -106,6 +106,30 @@ restore-dump:
 backup:
 	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") drush -r $(DRUPAL_ROOT) sql-dump --result-file=auto --gzip
 
+.PHONY: create-init
+create-init:
+##		For example: make create-init "<project_name>"
+	cp -R ${DESKTOP_PATH}drupal-7-pro-docker ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker
+	mkdir ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker/project
+
+.PHONY: copy-env-file
+copy-env-file:
+	cp .env.dist .env
+
+.PHONY: init
+init:
+	$(MAKE) create-project
+	$(MAKE) drupal-install
+
+.PHONY: create-project
+create-project:
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") wget https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VER}.tar.gz
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") mkdir httpdocs
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") tar --strip-components=1 -xvzf drupal-${DRUPAL_VER}.tar.gz -C httpdocs
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") rm -rf drupal-${DRUPAL_VER}.tar.gz
+# Find a better solution (chown -R wodby:www-data web/sites/default/files ?)
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") chmod -R 777 web/sites/default/files
+
 # https://stackoverflow.com/a/6273809/1826109
 %:
 	@:
