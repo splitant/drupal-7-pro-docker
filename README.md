@@ -18,9 +18,9 @@ The goal is to set up fastly a local Drupal 7 project with docker environment fo
 ### Installation
 
    ```sh
+   git clone git@github.com:splitant/drupal-7-pro-docker.git
+   cd drupal-7-pro-docker
    make create-setup <project> <repo-git>
-   cd ../<project>-docker
-   make copy-env-file
    # Fill env file
    make setup
    ```
@@ -28,9 +28,9 @@ The goal is to set up fastly a local Drupal 7 project with docker environment fo
 ### New project
 
    ```sh
+   git clone git@github.com:splitant/drupal-7-pro-docker.git
+   cd drupal-7-pro-docker
    make create-init <project>
-   cd ../<project>-docker
-   make copy-env-file
    # Fill env file
    make init
    ```

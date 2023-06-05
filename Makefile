@@ -87,15 +87,17 @@ logs:
 .PHONY: create-init
 create-init:
 ##		For example: make create-init "<project_name>"
-	cp -R ${DESKTOP_PATH}drupal-7-pro-docker ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker
+	mv ${DESKTOP_PATH}drupal-7-pro-docker ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker
 	mkdir ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker/project
+	$(MAKE) copy-env-file
 
 ## create-setup : Setup local project from existing Git project.
 ##		For example: make create-setup "<project_name> <repo-git>"
 .PHONY: create-setup
 create-setup:
-	cp -R ${DESKTOP_PATH}drupal-7-pro-docker ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker
+	mv ${DESKTOP_PATH}drupal-7-pro-docker ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker
 	git clone $(word 3, $(MAKECMDGOALS)) ${DESKTOP_PATH}$(word 2, $(MAKECMDGOALS))-docker/project
+	$(MAKE) copy-env-file
 
 ## init : Init new Drupal 7 project.
 .PHONY: init
